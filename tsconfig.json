@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "./public/",
+    "noImplicitAny": false,
+    "allowJs": true
+  },
+  "exclude": [
+    "/node_modules/"
+  ]
+}
