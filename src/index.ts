@@ -10,7 +10,7 @@ const slides: Array<SlideType> = [
 ]
 
 
-const slider = new Slider(slides, 3);
+const slider = new Slider(slides, 1);
 const root = document.getElementById('root');
 
 

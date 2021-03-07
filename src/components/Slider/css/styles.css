@@ -46,3 +46,27 @@
 .width-5 {
     max-width: 1100px;
 }
+
+.arrow {
+    width: 40px;
+    height: 46px;
+    background-size: contain;
+}
+
+.right-arrow {
+    background-image: url("/src/assets/img/arrow-right.png");
+}
+
+.left-arrow {
+    background-image: url("/src/assets/img/arrow-left.png");
+}
+
+.right-arrow:hover {
+    background-image: url("/src/assets/img/hover-arrow-right.png");
+    cursor: pointer;
+}
+
+.left-arrow:hover {
+    background-image: url("/src/assets/img/hover-arrow-left.png");
+    cursor: pointer;
+}

@@ -1,3 +1,5 @@
+import {ArrowsType} from "./SliderTypes";
+
 let slidesBlock: HTMLElement;
 let initTouch: number;
 let startTouch: number;
@@ -9,13 +11,16 @@ let swipeIndex: number = 0;
 let transformValues = /[-0-9.]+(?=px)/;
 let slidesOnScreen: number = 0;
 
-export const sliderStart = (slidesBlockElement, slidesNumber) => {
+export const sliderStart = (slidesBlockElement: HTMLElement, arrows: ArrowsType, slidesNumber: number) => {
     slidesOnScreen = slidesNumber;
     slidesBlock = slidesBlockElement;
 
     slidesBlock.style.transform = 'translate3d(0px, 0px, 0px)';
     slidesBlock.addEventListener('mousedown', swipeStart);
     slidesBlock.addEventListener('touchstart', swipeStart);
+
+    arrows.left.addEventListener('click', handleLeftArrowClick);
+    arrows.right.addEventListener('click', handleRightArrowClick);
 }
 
 const getEvent = (event) => {
@@ -64,7 +69,15 @@ const swipeEnd = () => {
     initTouch !== startTouch && slide();
 }
 
+const handleLeftArrowClick = () => {
+    swipeIndex--;
+    slide();
+}
 
+const handleRightArrowClick = () => {
+    swipeIndex++;
+    slide();
+}
 
 const slide = () => {
     if (swipeIndex > slidesBlock.children.length - slidesOnScreen) {
