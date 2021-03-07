@@ -10,9 +10,9 @@ const slides: Array<SlideType> = [
 ]
 
 
-const slider = new Slider(slides, 2);
+const slider = new Slider(slides, 3);
 const root = document.getElementById('root');
 
 
-root.innerHTML = `<h1>Slider Component</h1>`
+root.innerHTML = `<h1 class="slider-title">Slider Component</h1>`
 slider.renderSlides(root);

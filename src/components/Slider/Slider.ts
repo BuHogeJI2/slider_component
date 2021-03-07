@@ -1,25 +1,24 @@
 import {SlideType} from "./SliderTypes";
+import SliderLogic from "./SliderLogic";
 import './css/styles.css'
+import {sliderStart} from "./startSlider";
 
-export default class Slider {
+export default class Slider extends SliderLogic{
 
     slides: Array<SlideType>;
     slidesOnScreen: number;
 
-    log() {
-        console.log(this.slides)
-    }
-
     constructor(slides: Array<SlideType>, slidesOnScreen = 1) {
-        this.slides = slides
-        this.slidesOnScreen = slidesOnScreen
+        super();
+        this.slides = slides;
+        this.slidesOnScreen = slidesOnScreen;
     }
 
     createWrapper(className) {
         const wrapper = document.createElement('div');
         wrapper.classList.add(`${className}`);
 
-        return wrapper
+        return wrapper;
     }
 
     createSlidesBlock(slidesOnScreen: number) {
@@ -49,6 +48,9 @@ export default class Slider {
         sliderLine.append(slidesBlock);
         sliderWrapper.append(sliderLine);
         element.append(sliderWrapper);
+
+        // this.start();
+        sliderStart(slidesBlock, this.slidesOnScreen);
     }
 
 }
