@@ -11,17 +11,14 @@
 }
 
 .slides-block {
-    max-width: 1100px;
+    max-width: 1260px;
     min-width: 220px;
-    height: 220px;
     display: flex;
     flex-flow: row;
 }
 
 .slide {
     flex-shrink: 0;
-    width: 200px;
-    height: 180px;
     padding-top: 20px;
     background: white;
     margin: 10px;
@@ -31,21 +28,71 @@
     touch-action: pan-y;
 }
 
-.width-1 {
-    max-width: 220px;
+/************SLIDES BLOCK WIDTH*************/
+
+.width-1-200 {
+    width: 220px;
 }
-.width-2 {
-    max-width: 440px;
+.width-1-400 {
+    width: 420px;
 }
-.width-3 {
-    max-width: 660px;
+.width-1-600 {
+    width: 620px;
 }
-.width-4 {
-    max-width: 880px;
+.width-2-200 {
+    width: 440px;
 }
-.width-5 {
-    max-width: 1100px;
+.width-2-400 {
+    width: 840px;
 }
+.width-2-600, .width-3-600, .width-4-600, .width-5-600 {
+    width: 1240px;
+}
+.width-3-200 {
+    width: 660px;
+}
+.width-3-400, .width-4-400, .width-5-400 {
+    width: 1260px;
+}
+.width-4-200 {
+    width: 880px;
+}
+
+.width-5-200 {
+    width: 1100px;
+}
+
+/************************************/
+
+/******SLIDE SIZE********/
+
+.width-200 {
+    width: 200px;
+}
+
+.width-400 {
+    width: 400px;
+}
+
+.width-600 {
+    width: 600px;
+}
+
+.height-180 {
+    height: 180px;
+}
+
+.height-360 {
+    height: 360px;
+}
+
+.height-540 {
+    height: 540px;
+}
+
+/**************************/
+
+/*****ARROWS STYLES*******/
 
 .arrow {
     width: 40px;
@@ -70,3 +117,5 @@
     background-image: url("/src/assets/img/hover-arrow-left.png");
     cursor: pointer;
 }
+
+/*************************/

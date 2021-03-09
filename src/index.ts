@@ -1,5 +1,5 @@
 import Slider from "./components/Slider/Slider";
-import {SlideType} from "./components/Slider/SliderTypes";
+import {SliderOptionsType, SlideType} from "./components/Slider/SliderTypes";
 
 const slides: Array<SlideType> = [
     {title: 'First slide', text: 'Some text for first slide'},
@@ -9,8 +9,14 @@ const slides: Array<SlideType> = [
     {title: 'Fifth slide', text: 'Some text for fifth slide'},
 ]
 
+const sliderOptions: SliderOptionsType = {
+    slidesOnScreen: 1,
+    slideWidth: 200,
+    slideHeight: 180
+}
 
-const slider = new Slider(slides, 1);
+
+const slider = new Slider(slides, sliderOptions);
 const root = document.getElementById('root');
 
 

@@ -1,19 +1,31 @@
-import {ArrowsType} from "./SliderTypes";
+import {ArrowsType, SliderOptionsType} from "./SliderTypes";
 
 let slidesBlock: HTMLElement;
 let initTouch: number;
 let startTouch: number;
 let distance: number;
 let finalPosition: number;
-let slideWidth: number = 220;
-let posThreshold: number = slideWidth * 0.45;
+let slideWidth: number;
+let posThreshold: number;
 let swipeIndex: number = 0;
 let transformValues = /[-0-9.]+(?=px)/;
-let slidesOnScreen: number = 0;
+let slidesOnScreen: number;
 
-export const sliderStart = (slidesBlockElement: HTMLElement, arrows: ArrowsType, slidesNumber: number) => {
-    slidesOnScreen = slidesNumber;
+const getSlidesOnScreen = (slidesNumber: number, slideWidth: number) => {
+    if (slideWidth === 400 && slidesNumber >= 4) {
+        return 3;
+    } else if (slideWidth === 600 && slidesNumber >= 3) {
+        return 2;
+    } else {
+        return slidesNumber;
+    }
+}
+
+export const sliderStart = (slidesBlockElement: HTMLElement, arrows: ArrowsType, options: SliderOptionsType) => {
+    slidesOnScreen = getSlidesOnScreen(options.slidesOnScreen, options.slideWidth);
     slidesBlock = slidesBlockElement;
+    slideWidth = options.slideWidth + 20;
+    posThreshold = slideWidth * 0.35;
 
     slidesBlock.style.transform = 'translate3d(0px, 0px, 0px)';
     slidesBlock.addEventListener('mousedown', swipeStart);
