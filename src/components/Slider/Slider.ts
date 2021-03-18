@@ -1,60 +1,115 @@
-import {SliderOptionsType, SlideType} from "./SliderTypes";
-import './css/styles.css'
 import {sliderStart} from "./startSlider";
+import {ArrowsType} from "./SliderTypes";
+import './css/styles.css'
 
-export default class Slider{
+class Slider extends HTMLElement {
 
-    slides: Array<SlideType>;
-    options: SliderOptionsType;
+    slidesBlock: HTMLElement
+    arrows: ArrowsType
 
-    constructor(slides: Array<SlideType>, options: SliderOptionsType) {
-        this.slides = slides;
-        this.options = options;
+    minSlidesNumber: number = 1;
+    maxSlidesNumber: number = 5;
+    slidesNumber: number = 3;
+    slideWidth: number = 200;
+    slideHeight: number = 160;
+    slidesBlockWidth: number;
+    type: string = 'common';
+
+    connectedCallback() {
+        this.append(this.renderSlider());
+        sliderStart(this.slidesNumber, this.slideWidth, {
+            block: this.slidesBlock,
+            arrows: this.arrows
+        })
+
     }
 
-    createArrow(side: string) {
-        const arrow = document.createElement('div');
-        arrow.classList.add('arrow', `${side}-arrow`);
-        return arrow;
+    checkAttributes() {
+        if (this.hasAttribute('slides')) this.slidesNumber = +this.getAttribute('slides')
+        if (this.hasAttribute('type')) this.type = this.getAttribute('type');
     }
 
-    createWrapper(className: string) {
-        const wrapper = document.createElement('div');
-        wrapper.classList.add(`${className}`);
-        return wrapper;
+    setOptions() {
+
+        type Params = {
+            prop: 'width' | 'height'
+            value: number
+        }
+
+        const changeSlideParams = (param: Params) => {
+
+            if (this.slidesNumber < this.minSlidesNumber) this.slidesNumber = this.minSlidesNumber
+            else if (this.slidesNumber > this.maxSlidesNumber) this.slidesNumber = this.maxSlidesNumber
+
+            if (param.prop === 'width') this.slideWidth = param.value
+            else if (param.prop === 'height') this.slideHeight = param.value
+
+            const slides = this.slidesBlock.querySelectorAll<HTMLElement>('slide');
+            slides.forEach(slide => {
+                if (param.prop === 'width') slide.style.width = `${param.value}px`
+                else if (param.prop === 'height') slide.style.height = `${param.value}px`
+            });
+
+            this.slidesBlockWidth = (this.slideWidth + 20) * this.slidesNumber;
+            this.slidesBlock.style.width = `${this.slidesBlockWidth}px`;
+        }
+
+        switch (this.type) {
+            case 'wide': {
+                this.maxSlidesNumber = 2;
+                changeSlideParams({prop: 'width', value: 600})
+                break;
+            }
+            case 'narrow': {
+                changeSlideParams({prop: 'height', value: 320})
+                break;
+            }
+            case 'middle': {
+                this.maxSlidesNumber = 3;
+                changeSlideParams({prop: 'width', value: 400})
+                break;
+            }
+            default: {
+                changeSlideParams({prop: 'width', value: 200})
+                break;
+            }
+        }
     }
 
-    createSlidesBlock(slidesOnScreen: number) {
-        const sliderWrapper = document.createElement('div');
-        sliderWrapper.classList.add('slides-block');
-        slidesOnScreen && sliderWrapper.classList.add(`width-${slidesOnScreen}-${this.options.slideWidth}`)
+    renderSlider() {
+        const sliderWrapper = this.createWrapper('slider-wrapper');
+        const sliderLine = this.createWrapper('slider-line');
+        const slidesBlock = this.createWrapper('slides-block');
+        const leftArrow = this.createArrow('left-arrow');
+        const rightArrow = this.createArrow('right-arrow');
+
+        slidesBlock.append(...this.children);
+        sliderLine.append(slidesBlock);
+        sliderWrapper.append(leftArrow);
+        sliderWrapper.append(sliderLine);
+        sliderWrapper.append(rightArrow);
+
+        this.slidesBlock = slidesBlock;
+        this.arrows = {left: leftArrow, right: rightArrow}
+
+        this.checkAttributes();
+        this.setOptions()
+
         return sliderWrapper;
     }
 
-    renderSlide(title: string, text: string) {
-        const slide = document.createElement('div');
-        const slideContent = `<h2>${title}</h2> <p>${text}</p>`
-        slide.classList.add('slide', `width-${this.options.slideWidth}`, `height-${this.options.slideHeight}`);
-        slide.innerHTML += slideContent;
-        return slide
+    createWrapper(className) {
+        const element = document.createElement('div');
+        element.classList.add(className);
+        return element;
     }
 
-    renderSlides(element: HTMLElement) {
-        const slidesBlock = this.createSlidesBlock(this.options.slidesOnScreen);
-        const sliderLine = this.createWrapper('slider-line');
-        const sliderWrapper = this.createWrapper('slider-wrapper');
-        const leftArrow = this.createArrow('left');
-        const rightArrow = this.createArrow('right');
-
-        this.slides.forEach(slide => slidesBlock.append(this.renderSlide(slide.title, slide.text)));
-
-        sliderLine.append(slidesBlock);
-        sliderWrapper.append(leftArrow)
-        sliderWrapper.append(sliderLine);
-        sliderWrapper.append(rightArrow);
-        element.append(sliderWrapper);
-
-        sliderStart(slidesBlock, {left: leftArrow, right: rightArrow}, this.options);
+    createArrow(sideClass) {
+        const arrow = document.createElement('div');
+        arrow.classList.add('arrow', `${sideClass}`);
+        return arrow;
     }
 
 }
+
+customElements.define('custom-slider', Slider);

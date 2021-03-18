@@ -3,9 +3,11 @@
     "sourceMap": true,
     "outDir": "./public/",
     "noImplicitAny": false,
-    "allowJs": true
+    "allowJs": true,
+    "target": "es2015",
+    "module": "CommonJS"
   },
   "exclude": [
-    "/node_modules/"
+    "node_modules/"
   ]
 }

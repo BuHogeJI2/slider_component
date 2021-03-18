@@ -1,4 +1,4 @@
-import {ArrowsType, SliderOptionsType} from "./SliderTypes";
+import {ActiveElementsType} from "./SliderTypes";
 
 let slidesBlock: HTMLElement;
 let initTouch: number;
@@ -6,33 +6,24 @@ let startTouch: number;
 let distance: number;
 let finalPosition: number;
 let slideWidth: number;
+let slidesOnScreen: number;
 let posThreshold: number;
 let swipeIndex: number = 0;
 let transformValues = /[-0-9.]+(?=px)/;
-let slidesOnScreen: number;
 
-const getSlidesOnScreen = (slidesNumber: number, slideWidth: number) => {
-    if (slideWidth === 400 && slidesNumber >= 4) {
-        return 3;
-    } else if (slideWidth === 600 && slidesNumber >= 3) {
-        return 2;
-    } else {
-        return slidesNumber;
-    }
-}
+export const sliderStart = (slidesNumber, width, elements: ActiveElementsType) => {
 
-export const sliderStart = (slidesBlockElement: HTMLElement, arrows: ArrowsType, options: SliderOptionsType) => {
-    slidesOnScreen = getSlidesOnScreen(options.slidesOnScreen, options.slideWidth);
-    slidesBlock = slidesBlockElement;
-    slideWidth = options.slideWidth + 20;
+    slidesBlock = elements.block;
+    slideWidth = width + 20;
     posThreshold = slideWidth * 0.35;
+    slidesOnScreen = slidesNumber;
 
     slidesBlock.style.transform = 'translate3d(0px, 0px, 0px)';
     slidesBlock.addEventListener('mousedown', swipeStart);
     slidesBlock.addEventListener('touchstart', swipeStart);
 
-    arrows.left.addEventListener('click', handleLeftArrowClick);
-    arrows.right.addEventListener('click', handleRightArrowClick);
+    elements.arrows.left.addEventListener('click', handleLeftArrowClick);
+    elements.arrows.right.addEventListener('click', handleRightArrowClick);
 }
 
 const getEvent = (event) => {
@@ -61,6 +52,7 @@ const swipeAction =(event) => {
 }
 
 const swipeEnd = () => {
+
     finalPosition = initTouch - startTouch;
 
     document.removeEventListener('mousemove', swipeAction);
@@ -92,6 +84,7 @@ const handleRightArrowClick = () => {
 }
 
 const slide = () => {
+
     if (swipeIndex > slidesBlock.children.length - slidesOnScreen) {
         swipeIndex = slidesBlock.children.length - slidesOnScreen;
     } else if (swipeIndex < 0) {
